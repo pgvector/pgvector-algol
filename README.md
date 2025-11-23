@@ -17,7 +17,7 @@ Follow the instructions for your database library:
 Enable the extension
 
 ```algol
-pq exec (db, "CREATE EXTENSION vector");
+pq exec (db, "CREATE EXTENSION IF NOT EXISTS vector");
 ```
 
 Create a table
