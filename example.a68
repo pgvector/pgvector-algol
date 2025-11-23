@@ -1,0 +1,22 @@
+FILE db;
+STRING res;
+
+IF pq connectdb (db, "dbname=pgvector_algol_test", res) /= 0
+THEN ASSERT (pq error message (db) = 0);
+  print((res, newline));
+  GOTO finish
+FI;
+
+ASSERT (pq exec (db, "DROP TABLE IF EXISTS items") = 0);
+ASSERT (pq exec (db, "CREATE TABLE items (id bigserial PRIMARY KEY, embedding vector(3))") = 0);
+
+ASSERT (pq exec (db, "INSERT INTO items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]')") = 0);
+
+ASSERT (pq exec (db, "SELECT id FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 5") = 0);
+FOR i TO pq ntuples (db)
+DO ASSERT (pq getvalue (db, i, 1) = 0);
+  print((res, newline))
+OD;
+
+finish:
+ASSERT (pq finish (db) = 0)
