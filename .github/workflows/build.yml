@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: sudo apt-get update && sudo apt-get install algol68g
+      - run: echo /home/linuxbrew/.linuxbrew/bin >> $GITHUB_PATH
+      - run: brew install algol68g
       - uses: ankane/setup-postgres@v1
         with:
           database: pgvector_algol_test
